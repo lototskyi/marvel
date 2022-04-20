@@ -1,11 +1,11 @@
 import { useState, useEffect, useRef } from 'react';
+import { CSSTransition, TransitionGroup } from 'react-transition-group';
 import PropTypes from 'prop-types';
 import Spinner from '../spinner/Spinner';
 import ErrorMessage from '../errorMessage/ErrorMessage';
 import useMarvelService from '../../services/MarvelService';
 
 import './charList.scss';
-
 
 const CharList = (props) => {
 
@@ -54,31 +54,38 @@ const CharList = (props) => {
             }
 
             return (
-                <li 
-                    className="char__item char__selected"
-                    key={item.id}
-                    tabIndex={0}
-                    ref={el => itemRefs.current[i] = el}
-                    onClick={() => {
-                        props.onCharSelected(item.id);
-                        focusOnItem(i);
-                    }}
-                    onKeyPress={(e) => {
-                        if (e.key === ' ' || e.key === "Enter") {
-                            props.onCharSelected(item.id);
-                            focusOnItem(i);
-                        }
-                    }}>
-                    <img src={item.thumbnail} alt={item.name} style={imgStyle}/>
-                    <div className="char__name">{item.name}</div>
-                </li>
+                <CSSTransition
+                    key={i}
+                    timeout={500}
+                    classNames="char__item">
+                        <li
+                            className="char__item char__selected"
+                            key={item.id}
+                            tabIndex={0}
+                            ref={el => itemRefs.current[i] = el}
+                            onClick={() => {
+                                props.onCharSelected(item.id);
+                                focusOnItem(i);
+                            }}
+                            onKeyPress={(e) => {
+                                if (e.key === ' ' || e.key === "Enter") {
+                                    props.onCharSelected(item.id);
+                                    focusOnItem(i);
+                                }
+                            }}>
+                        <img src={item.thumbnail} alt={item.name} style={imgStyle}/>
+                        <div className="char__name">{item.name}</div>
+                    </li>
+                </CSSTransition>
             );
 
         });
 
         return (
             <ul className="char__grid">
-                {items}
+                <TransitionGroup component={null}>
+                    {items}
+                </TransitionGroup>
             </ul>
         );
     }
