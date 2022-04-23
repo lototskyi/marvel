@@ -1,5 +1,5 @@
 import { useState } from "react";
-import Helmet from "react-helmet";
+import { Helmet, HelmetProvider } from 'react-helmet-async';
 import RandomChar from "../randomChar/RandomChar";
 import CharList from "../charList/CharList";
 import CharInfo from "../charInfo/CharInfo";
@@ -17,6 +17,7 @@ const MainPage = () => {
     }
 
     return (
+        <HelmetProvider>
         <>
             <Helmet>
                 <meta
@@ -43,6 +44,7 @@ const MainPage = () => {
             </div>
             <img className="bg-decoration" src={decoration} alt="vision"/>
         </>
+        </HelmetProvider>
     );
 }
 
