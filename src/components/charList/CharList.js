@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, useMemo } from 'react';
 import { CSSTransition, TransitionGroup } from 'react-transition-group';
 import PropTypes from 'prop-types';
 import Spinner from '../spinner/Spinner';
@@ -106,9 +106,13 @@ const CharList = (props) => {
         );
     }
 
+    const elements = useMemo(() => {
+        return setContent(status, () => renderItems(charList), newItemLoading);
+    }, [status])
+
     return (
         <div className="char__list">
-            {setContent(status, () => renderItems(charList), newItemLoading)}
+            {elements}
             <button 
                 className="button button__main button__long"
                 disabled={newItemLoading}
